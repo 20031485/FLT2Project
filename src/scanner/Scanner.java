@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PushbackReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -35,22 +36,22 @@ public class Scanner {
 	public Scanner(String fileName) throws FileNotFoundException {
 		this.buffer = new PushbackReader(new FileReader(fileName));
 		line = 1;
-
 	}
 
 	//legge caratteri dallo stream, restituisce un token ma non consuma caratteri dell'input
 	//chiamando due volte peekToken ottengo lo stesso token
-	public Token peekToken() throws IOException {
+/*	public Token peekToken() throws IOException {
 		Token token = null;
-		char c = 'a';
-		char[] pushback = null;
+		Character c = null;
+		ArrayList<Character> pushback = new ArrayList<>();
 		String tokenString = "";
 		
 		//finchè non becco un carattere illegale o finchè non finisco il token
 		while(true) {
 			c = peekChar();
 			System.out.println("Read char \""+c+"\"");
-			
+			c = readChar();
+			pushback.add(c);
 			//se il carattere è una lettera, allora voglio leggere un id
 			//oppure un INTDEC o FLOATDEC, quindi controllo che la stringa sia
 			//int o float o altro
@@ -91,6 +92,121 @@ public class Scanner {
 			}
 		}
 		return token;
+	}*/
+	public Token peekToken() throws IOException, LexicalException{
+		Character c = null;
+		//ArrayList<Character> charList = new ArrayList<>();
+		String tokenString = null;
+		//TODO capire come gestire currentLine
+		int currentLine = line;
+		if(numbers.contains(peekChar()) || letters.contains(peekChar()) 
+				|| operators.contains(peekChar()) || skipChars.contains(peekChar())) {
+			c = readChar();
+			//charList.add(c);
+			tokenString += c;
+			
+			//se c è un operatore
+			if(operators.contains(c)) {
+				buffer.unread(c);
+				switch(c) {
+					//rimetto sul buffer tutto quel che ho letto
+					case '+':
+						return new Token(TokenType.PLUS, line, tokenString);
+					case '-':
+						return new Token(TokenType.MINUS, line, tokenString);
+					case '*':
+						return new Token(TokenType.TIMES, line, tokenString);
+					case '/':
+						return new Token(TokenType.DIV, line, tokenString);
+					case '=':
+						return new Token(TokenType.ASSIGN, line, tokenString);
+					case ';':
+						return new Token(TokenType.SEMI, line, tokenString);
+				}
+			}
+			
+			//se c è una lettera mi aspetto o altre lettere o uno skipchar
+			else if(letters.contains(c)) {
+				while(letters.contains(peekChar())) {
+					c = readChar();
+					//charList.add(c);
+					tokenString += c;
+				}
+				//ho letto tutte le lettere finchè non è capitato un altro simbolo
+				//se il simbolo dopo è accettabile (operatore, skipchar)
+				//restituisco un token a seconda di cosa ho letto
+				if(operators.contains(peekChar()) || skipChars.contains(peekChar())) {
+					//sleggo
+					//buffer.unread(toCharArray(tokenString));
+					//printBuffer();
+					switch(tokenString) {
+						case "int":	
+							return new Token(TokenType.INTDEC, line, tokenString);
+						case "float":
+							return new Token(TokenType.FLOATDEC, line, tokenString);
+						case "print":	
+							return new Token(TokenType.PRINT, line, tokenString);
+						default:
+							return new Token(TokenType.ID, line, tokenString);
+					}
+				}
+				//altrimenti LexicalException()
+				else {
+					buffer.unread(tokenString.toCharArray());
+					throw new LexicalException("LexicalException@line:"+line);
+				}
+			}
+			
+			//se ho letto un numero voglio leggere un int o un float
+			else if(numbers.contains(c)) {
+				//flag per segnalare una lettura di '.' già avvenuta
+				boolean dotSeen = false;
+				while(numbers.contains(peekChar()) || peekChar() == '.') {
+					//se ho già incontrato un '.'
+					if(peekChar() == '.' && dotSeen)
+						throw new LexicalException("LexicalException@line:"+line);
+					
+					//se non ho ancora incontrato '.' e lo incontro ora
+					else if(!dotSeen && peekChar() == '.') {
+						c = readChar();
+						//charList.add(c);
+						tokenString += c;
+					}
+					else {
+						c = readChar();
+						//charList.add(c);
+						tokenString += c;
+					}
+					if(operators.contains(peekChar()) || skipChars.contains(peekChar())) {
+						if(dotSeen) {
+							buffer.unread(toCharArray(tokenString));
+							return new Token(TokenType.FLOATVAL, line, tokenString);
+						}
+						else {
+							buffer.unread(toCharArray(tokenString));
+							return new Token(TokenType.INTVAL, line, tokenString);
+						}
+					}
+				}
+			}
+			
+			//se ho letto uno skipChar, sleggo e richiamo la peektoken
+			else if(skipChars.contains(c)) {
+				//buffer.unread(c);
+				return peekToken();
+			}
+		}	
+		else
+			throw new LexicalException("LexicalException@line:"+line);
+		return null;
+	}
+	
+	private char[] toCharArray(String s) {
+		char[] chArr = new char[s.length()];
+		for(int i=0; i<s.length(); i++)
+			chArr[i] = s.charAt(i);
+		print(s);
+		return chArr;
 	}
 	
 	//legge caratteri dallo stream, restituisce un token e lo consuma
@@ -170,7 +286,6 @@ public class Scanner {
 		while(letters.contains(peekChar())){
 			string += readChar();
 		}
-		
 		if(string.equals("int")) {
 			return new Token(TokenType.INTDEC, line, string);
 		}
@@ -193,5 +308,13 @@ public class Scanner {
 		char c = (char) buffer.read();
 		buffer.unread(c);
 		return c;
+	}
+	
+	public void printBuffer() {
+		System.out.println(buffer.toString());
+	}
+	
+	public void print(String s) {
+		System.out.println(s);
 	}
 }

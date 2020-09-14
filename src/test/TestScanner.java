@@ -20,17 +20,15 @@ public class TestScanner {
 		try {
 			Scanner scanner = new Scanner(path);
 			try {
-				Token token = scanner.scanId();
+				//Token token = scanner.scanId();
+				Token token = scanner.peekToken();
 				System.out.println(token.toString());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (LexicalException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
