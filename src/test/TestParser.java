@@ -17,7 +17,7 @@ public class TestParser {
 			Parser parser = new Parser(path);
 			try {
 				parser.parse();
-			} catch (SyntaxException | IOException | LexicalException e) {
+			} catch (SyntaxException e) {
 				// TODO Auto-generated catch block
 				//e.printStackTrace();
 			}
