@@ -56,7 +56,6 @@ public class Scanner {
 				c = readChar();
 				if(c == '\n') currentLine++;
 				if(c == EOF) {
-					//buffer = bufferClone;
 					buffer.unread(c);
 					return new Token(TokenType.EOF, currentLine, null);
 				}
@@ -185,7 +184,6 @@ public class Scanner {
 		throw new LexicalException("LexicalException@line:"+line+"\nExpected EOF!");
 	}
 	private Token scanOp() throws IOException, LexicalException {
-		Character c = null;
 		//consumo gli eventuali skipChars ed incremento line
 		readSkipChars();
 		switch(readChar()) {
@@ -272,7 +270,7 @@ public class Scanner {
 	
 	public void readSkipChars() throws IOException {
 		Character c = null;
-		while(skipChars.contains(peekChar())) {
+		while(skipChars.contains(peekChar()) && peekChar() != EOF) {
 			c = readChar();
 		}
 	}

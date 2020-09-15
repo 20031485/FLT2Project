@@ -55,7 +55,7 @@ public class Parser {
 				parseDSs();
 				return;
 			case EOF:
-				match(TokenType.EOF);
+				//match(TokenType.EOF);//--> ritorno soltanto, il match di EOF è in parsePrg!
 				return;
 			default:
 				throw new SyntaxException("SyntaxException@line:"+token.getLine()+"\nUnexpected token!");
@@ -100,10 +100,8 @@ public class Parser {
 	void match(TokenType tokenType) throws SyntaxException, IOException, LexicalException {
 		Token token = scanner.peekToken();
 		if(tokenType == token.getType()) {
-			if(token.getType() == TokenType.EOF) {
-				return;
-			}
-			print(scanner.nextToken()+"");
+			Token nextToken = scanner.nextToken();
+			print(nextToken.toString());
 		}
 		else
 			throw new SyntaxException("SyntaxException@line:"+token.getLine()+"\nUnexpected token!");
