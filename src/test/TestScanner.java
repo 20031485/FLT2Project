@@ -15,7 +15,7 @@ import token.TokenType;
 public class TestScanner {
 	
 	@Test
-	public void testScanId(){
+	public void testScanner(){
 		String path ="src/test/data/testId.txt";
 		try {
 			Scanner scanner = new Scanner(path);

@@ -242,7 +242,7 @@ public class Scanner {
 			return new Token(TokenType.FLOATDEC, line, string);
 		}
 		else if(string.equals("print")) {
-			return new Token(TokenType.FLOATDEC, line, string);
+			return new Token(TokenType.PRINT, line, string);
 		}
 		else {
 			return new Token(TokenType.ID, line, string);

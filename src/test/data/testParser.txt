@@ -1,0 +1,4 @@
+int a;
+print f;
+float culo;
+aaaaaaaaaaaaa
