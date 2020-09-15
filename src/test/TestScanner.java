@@ -21,8 +21,10 @@ public class TestScanner {
 			Scanner scanner = new Scanner(path);
 			try {
 				//Token token = scanner.scanId();
-				Token token = scanner.peekToken();
-				System.out.println(token.toString());
+				System.out.println(scanner.peekToken().toString());
+				System.out.println(scanner.peekToken().toString());
+				System.out.println(scanner.peekToken().toString());
+				System.out.println(scanner.peekToken().toString());
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (LexicalException e) {
