@@ -20,11 +20,13 @@ public class TestScanner {
 		try {
 			Scanner scanner = new Scanner(path);
 			try {
-				//Token token = scanner.scanId();
-				System.out.println(scanner.peekToken().toString());
-				System.out.println(scanner.peekToken().toString());
-				System.out.println(scanner.peekToken().toString());
-				System.out.println(scanner.peekToken().toString());
+				Token token = new Token(null, 0, null);
+				while(scanner.peekToken().getType() != TokenType.EOF) {
+					System.out.print(scanner.nextToken().toString());
+				}
+				//il prossimo è EOF
+				token = new Token(TokenType.EOF, scanner.getLine(), null);
+				System.out.print(token.toString());
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (LexicalException e) {

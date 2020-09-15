@@ -13,9 +13,5 @@ public enum TokenType {
 	TIMES,
 	DIV,
 	SEMI,
-	FUN,
-	PARA,
-	PARC,
-	VAL,
 	EOF;
 }
