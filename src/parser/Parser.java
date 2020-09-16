@@ -2,6 +2,14 @@ package parser;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+
+import ast.NodeAST;
+import ast.NodeDcl;
+import ast.NodeDclStm;
+import ast.NodePrg;
+import ast.NodePrint;
+import ast.NodeStm;
 import scanner.LexicalException;
 import scanner.Scanner;
 import token.Token;
@@ -14,9 +22,9 @@ public class Parser {
 		this.scanner = new Scanner(filename);
 	}
 	
-	public void parse() throws SyntaxException {
+	public NodeAST parse() throws SyntaxException {
 		try{
-			parsePrg();
+			return parsePrg();
 		}
 		catch(SyntaxException e) {
 			throw new SyntaxException(e.getMessage());
@@ -24,7 +32,7 @@ public class Parser {
 	}
 	
 	//Prg -> DSs $
-	void parsePrg() throws SyntaxException{
+	private NodePrg parsePrg() throws SyntaxException{
 		try{
 			Token token = scanner.peekToken();
 			//print("parsePrg");
@@ -33,10 +41,13 @@ public class Parser {
 				case INTDEC:
 				case ID:
 				case PRINT:
-				case EOF:
-					parseDSs();
+					NodePrg nodePrg1 = new NodePrg(parseDSs());
 					match(TokenType.EOF);
-					return;
+					return nodePrg1;
+				case EOF:
+					NodePrg nodePrg2 = new NodePrg();
+					match(TokenType.EOF);
+					return nodePrg2;//return new NodePrg(params);
 				default:
 					panicMode(token);
 			}
@@ -44,27 +55,30 @@ public class Parser {
 		catch(IOException | LexicalException | SyntaxException e) {
 			throw new SyntaxException(e.getMessage());
 		}
+		return null;//da togliere, messo solo per non avere errore
 	}
 	
 	//DSs -> Dcl DSs | Stm DSs | eps
-	private void parseDSs() throws SyntaxException {
+	private ArrayList<NodeDclStm> parseDSs() throws SyntaxException {
 		try {
 			Token token = scanner.peekToken();
+			ArrayList<NodeDclStm> nodeDS;
 			//print("parseDSs");
 			switch(token.getType()) {
 				case FLOATDEC:
 				case INTDEC:
-					parseDcl();
-					parseDSs();
-					return;
+					NodeDcl nodeDcl = parseDcl();
+					nodeDS = parseDSs();
+					nodeDS.add(nodeDcl);
+					return nodeDS;
 				case ID:
 				case PRINT:
-					parseStm();
-					parseDSs();
-					return;
+					NodeStm nodeStm = parseStm();//boh non so se NodeDclStm è giusto LOL
+					nodeDS = parseDSs();
+					nodeDS.add(nodeStm);
+					return nodeDS;
 				case EOF:
-					//match(TokenType.EOF);//--> ritorno soltanto, il match di EOF è in parsePrg!
-					return;
+					return new ArrayList<NodeDclStm>();
 				default:
 					panicMode(token);
 			}
@@ -75,21 +89,24 @@ public class Parser {
 	}
 	
 	//Dcl -> tyFloat id; | tyInt id;
-	private void parseDcl() throws SyntaxException {
+	private NodeDcl parseDcl() throws SyntaxException {
 		try{
 			Token token = scanner.peekToken();
 			//print("parseDcl");	
+			NodeDcl nodeDcl = new NodeDcl();
 			switch(token.getType()) {
 				case FLOATDEC:
+					//modifica a nodeDcl da ritornare
 					match(TokenType.FLOATDEC);
 					match(TokenType.ID);
 					match(TokenType.SEMI);
-					return;
+					return nodeDcl;
 				case INTDEC:
+					//modifica a nodeDcl da ritornare
 					match(TokenType.INTDEC);
 					match(TokenType.ID);
 					match(TokenType.SEMI);
-					return;
+					return nodeDcl;
 				default:
 					panicMode(token);
 			}
@@ -97,25 +114,28 @@ public class Parser {
 		catch(IOException | LexicalException | SyntaxException e) {
 			throw new SyntaxException(e.getMessage());
 		}
+		return null;
 	}
 	
 	//Stm -> print id; | id = Exp;
-	private void parseStm() throws SyntaxException {
+	private NodeStm parseStm() throws SyntaxException {
 		try {
 			Token token = scanner.peekToken();
+			NodeStm nodeStm;
 			//print("parseStm");
 			switch(token.getType()) {
 				case PRINT:
+					NodeStm nodePrint = new NodePrint(null);
 					match(TokenType.PRINT);
 					match(TokenType.ID);
 					match(TokenType.SEMI);
-					return;
+					return nodePrint;
 				case ID:
 					match(TokenType.ID);
 					match(TokenType.ASSIGN);
 					parseExp();
 					match(TokenType.SEMI);
-					return;
+					return null; //modificare in futuro con un return nodeExp credo LOL
 				default:
 					panicMode(token);
 			}
@@ -123,6 +143,7 @@ public class Parser {
 		catch(IOException | LexicalException | SyntaxException e) {
 			throw new SyntaxException(e.getMessage());
 		}
+		return null;
 	}
 	
 	//Exp -> Tr ExpP
@@ -246,8 +267,8 @@ public class Parser {
 			Token nextToken = scanner.nextToken();
 			print(nextToken.toString());
 		}
-		else
-			panicMode(token);
+		//else
+			//panicMode(token);
 	}
 	
 	public void print(String s) {
