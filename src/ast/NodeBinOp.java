@@ -1,16 +1,15 @@
 package ast;
 
-public class NodePrint extends NodeStm {
-	private NodeId id;
+public class NodeBinOp extends NodeExpr {
+	LangOp op;
+	NodeExpr leftOp;
+	NodeExpr ast;
 	
-	public NodePrint(NodeId id) {
-		this.id = id;
-	}
-	
+	@Override
 	public String toString() {
-		return id.toString(); //sistemare
+		// TODO Auto-generated method stub
+		return null;
 	}
-
 	@Override
 	public boolean equals(Object o) {
 		// TODO Auto-generated method stub

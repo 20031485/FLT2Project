@@ -1,14 +1,11 @@
 package ast;
 
-public class NodePrint extends NodeStm {
+public class NodeDeref extends NodeExpr {
 	private NodeId id;
-	
-	public NodePrint(NodeId id) {
-		this.id = id;
-	}
-	
+	@Override
 	public String toString() {
-		return id.toString(); //sistemare
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -16,4 +13,5 @@ public class NodePrint extends NodeStm {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
 }

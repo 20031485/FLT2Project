@@ -21,7 +21,7 @@ public class TestScanner {
 			Scanner scanner = new Scanner(path);
 			Token token = new Token(TokenType.INTVAL, 1, "1231241139276");
 			assertTrue(scanner.peekToken().equals(token));
-			
+
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
