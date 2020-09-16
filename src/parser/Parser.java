@@ -73,7 +73,7 @@ public class Parser {
 					return nodeDS;
 				case ID:
 				case PRINT:
-					NodeStm nodeStm = parseStm();//boh non so se NodeDclStm è giusto LOL
+					nodeDS.add(parseStm());//boh non so se NodeDclStm è giusto LOL
 					nodeDS = parseDSs();
 					nodeDS.add(nodeStm);
 					return nodeDS;
