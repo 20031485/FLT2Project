@@ -68,10 +68,7 @@ public class Parser {
 					//match(TokenType.EOF);//--> ritorno soltanto, il match di EOF è in parsePrg!
 					return;
 				default:
-					Token wrongToken = token;
-					token = scanner.nextToken();
-					parsePrg();
-					throw new SyntaxException("SyntaxException@line:"+wrongToken.getLine()+"\nUnexpected token: "+wrongToken.toString());
+					panicMode(token);
 			}
 		}
 		catch(IOException | LexicalException | SyntaxException e) {
@@ -120,6 +117,7 @@ public class Parser {
 					match(TokenType.ASSIGN);
 					parseExp();
 					return;
+
 				default:
 					panicMode(token);
 			}
@@ -183,6 +181,7 @@ public class Parser {
 					parseExp();
 					return;
 				case SEMI:
+
 					//parse eps
 					return;
 				default:
@@ -249,7 +248,7 @@ public class Parser {
 			print(nextToken.toString());
 		}
 		else
-			throw new SyntaxException("SyntaxException@line:"+token.getLine()+"\nUnexpected token: "+token.toString());
+			panicMode(token);
 	}
 	
 	public void print(String s) {
@@ -260,10 +259,13 @@ public class Parser {
 		Token wrongToken = token;
 		try{
 			token = scanner.nextToken();
-			parsePrg();
+			print("diomerda");
 			throw new SyntaxException("SyntaxException@line:"+wrongToken.getLine()+"\nUnexpected token: "+wrongToken.toString());
 		}
 		catch(IOException | LexicalException | SyntaxException e) {
+			print("diocan");
+			parsePrg();
+			if(e.getMessage() != null)
 			throw new SyntaxException(e.getMessage());
 		}
 		
