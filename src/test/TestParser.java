@@ -11,7 +11,7 @@ import scanner.LexicalException;
 
 public class TestParser {
 	@Test
-	public void testParser() throws IOException, LexicalException {
+	public void testParser(){
 		String path ="src/test/data/testParser.txt";
 		try {
 			Parser parser = new Parser(path);

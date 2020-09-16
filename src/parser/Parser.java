@@ -14,8 +14,6 @@ public class Parser {
 		this.scanner = new Scanner(filename);
 	}
 	
-	
-	
 	public void parse() throws SyntaxException {
 		try{
 			parsePrg();
@@ -65,13 +63,10 @@ public class Parser {
 					parseDSs();
 					return;
 				case EOF:
-					//match(TokenType.EOF);//--> ritorno soltanto, il match di EOF è in parsePrg!
+					//match(TokenType.EOF);//--> ritorno soltanto, il match di EOF Ã¨ in parsePrg!
 					return;
 				default:
-					Token wrongToken = token;
-					token = scanner.nextToken();
-					parsePrg();
-					throw new SyntaxException("SyntaxException@line:"+wrongToken.getLine()+"\nUnexpected token: "+wrongToken.toString());
+					panicMode(token);
 			}
 		}
 		catch(IOException | LexicalException | SyntaxException e) {
@@ -119,6 +114,7 @@ public class Parser {
 					match(TokenType.ID);
 					match(TokenType.ASSIGN);
 					parseExp();
+					match(TokenType.SEMI);
 					return;
 				default:
 					panicMode(token);
@@ -230,7 +226,9 @@ public class Parser {
 					match(TokenType.DIV);
 					parseTr();
 					return;
-				case ID:
+				case PLUS:
+				case MINUS:
+				case SEMI:
 					//parse eps
 					return;
 				default:
@@ -249,7 +247,7 @@ public class Parser {
 			print(nextToken.toString());
 		}
 		else
-			throw new SyntaxException("SyntaxException@line:"+token.getLine()+"\nUnexpected token: "+token.toString());
+			panicMode(token);
 	}
 	
 	public void print(String s) {
@@ -260,10 +258,11 @@ public class Parser {
 		Token wrongToken = token;
 		try{
 			token = scanner.nextToken();
+			print("panicMode:TRY\n\tSyntaxException@line:"+wrongToken.getLine()+"\nUnexpected token: "+wrongToken.toString());
 			parsePrg();
-			throw new SyntaxException("SyntaxException@line:"+wrongToken.getLine()+"\nUnexpected token: "+wrongToken.toString());
 		}
 		catch(IOException | LexicalException | SyntaxException e) {
+			print("panicMode:CATCH");
 			throw new SyntaxException(e.getMessage());
 		}
 		

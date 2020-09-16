@@ -134,7 +134,7 @@ public class Scanner {
 				//copio il vecchio buffer e ritorno un token
 				buffer.unread(tokenString.toCharArray());
 				if(dotSeen) {
-					if(digits < MAX_DIGITS && digits > MIN_DIGITS)
+					if(digits <= MAX_DIGITS && digits >= MIN_DIGITS)
 						return new Token(TokenType.FLOATVAL, currentLine, tokenString);
 					else
 						throw new LexicalException("LexicalException@line:"+currentLine+"\n"+digits+" digits after '.' (must be between 1 and 5)!");

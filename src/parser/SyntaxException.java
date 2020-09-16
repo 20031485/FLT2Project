@@ -2,6 +2,6 @@ package parser;
 
 public class SyntaxException extends Exception{
 	public SyntaxException(String msg) {
-		System.err.println(msg);
+		System.out.println("\n\t[EXCEPTION]: "+msg+"\n");
 	}
 }
