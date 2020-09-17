@@ -33,4 +33,10 @@ public class NodeConst extends NodeExpr {
 				return true;
 		return false;
 	}
+
+	@Override
+	public void accept() {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -22,4 +22,10 @@ public class NodePrint extends NodeStm {
 			return true;
 		return false;
 	}
+
+	@Override
+	public void accept() {
+		// TODO Auto-generated method stub
+		
+	}
 }

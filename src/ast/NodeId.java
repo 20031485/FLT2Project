@@ -1,10 +1,14 @@
 package ast;
 
+import symbolTable.Attributes;
+
 public class NodeId extends NodeAST {
 	private final String id;
+	private final Attributes definition;
 	//private String lexval;
 	
 	public NodeId(String id) {
+		this.definition = new Attributes();//TODO
 		this.id = id;
 	}
 	
@@ -23,5 +27,11 @@ public class NodeId extends NodeAST {
 
 	public String getId() {
 		return this.id;
+	}
+
+	@Override
+	public void accept() {
+		// TODO Auto-generated method stub
+		
 	}
 }

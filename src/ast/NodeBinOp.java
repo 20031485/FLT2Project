@@ -39,4 +39,10 @@ public class NodeBinOp extends NodeExpr {
 					return true;
 		return false;
 	}
+
+	@Override
+	public void accept() {
+		// TODO Auto-generated method stub
+		
+	}
 }

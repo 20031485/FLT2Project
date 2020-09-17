@@ -37,4 +37,10 @@ public class NodePrg extends NodeAST {
 			return true;
 		return false;
 	}
+
+	@Override
+	public void accept() {
+		// TODO Auto-generated method stub
+		
+	}
 }

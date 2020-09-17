@@ -24,4 +24,10 @@ public class NodeDeref extends NodeExpr {
 		return false;
 	}
 
+	@Override
+	public void accept() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
