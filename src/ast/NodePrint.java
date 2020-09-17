@@ -12,7 +12,7 @@ public class NodePrint extends NodeStm {
 	}
 	
 	public String toString() {
-		return "print "+ id.toString(); //sistemare
+		return "p "+ id.toString(); //sistemare
 	}
 
 	@Override

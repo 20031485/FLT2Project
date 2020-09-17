@@ -19,7 +19,7 @@ public class NodeAssign extends NodeStm {
 	
 	@Override
 	public String toString() {
-		return "ASSIGN " +this.id.toString()+" "+this.expr.toString();
+		return "= " +this.id.toString()+" "+this.expr.toString();
 	}
 	
 	@Override

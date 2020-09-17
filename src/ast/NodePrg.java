@@ -21,7 +21,13 @@ public class NodePrg extends NodeAST {
 	
 	@Override
 	public String toString() {
-		return dclStm.toString();
+		int i = 0;
+		String toString = "";
+		while(i < this.dclStm.size()) {
+			toString += this.dclStm.get(i).toString() + " ";
+			i++;
+		}
+		return toString;
 	}
 
 	@Override
