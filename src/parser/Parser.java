@@ -14,7 +14,7 @@ import scanner.LexicalException;
 import scanner.Scanner;
 import token.Token;
 import token.TokenType;
-
+//TODO classe statica Attributes per mantenere gli attributi durante il parsing
 public class Parser {
 	private Scanner scanner;
 	
@@ -47,7 +47,7 @@ public class Parser {
 				case EOF:
 					NodePrg nodePrg2 = new NodePrg();
 					match(TokenType.EOF);
-					return nodePrg2;//return new NodePrg(params);
+					return nodePrg2;
 				default:
 					panicMode(token);
 			}
@@ -62,21 +62,24 @@ public class Parser {
 	private ArrayList<NodeDclStm> parseDSs() throws SyntaxException {
 		try {
 			Token token = scanner.peekToken();
-			ArrayList<NodeDclStm> nodeDS;
 			//print("parseDSs");
 			switch(token.getType()) {
 				case FLOATDEC:
 				case INTDEC:
 					NodeDcl nodeDcl = parseDcl();
-					nodeDS = parseDSs();
-					nodeDS.add(nodeDcl);
-					return nodeDS;
+					ArrayList<NodeDclStm> nodeDS1 = parseDSs();
+					nodeDS1.add(nodeDcl);
+					return nodeDS1;
 				case ID:
 				case PRINT:
-					nodeDS.add(parseStm());//boh non so se NodeDclStm è giusto LOL
-					nodeDS = parseDSs();
-					nodeDS.add(nodeStm);
-					return nodeDS;
+					NodeStm nodeStm = parseStm();
+					ArrayList<NodeDclStm> nodeDS2 = parseDSs();
+					//if(nodeStm != null)
+						//nodeDS.add(nodeStm);
+					//nodeDS.add(parseStm());//boh non so se NodeDclStm è giusto LOL
+					//nodeDS = parseDSs();
+					//nodeDS.add(nodeStm);
+					return nodeDS2;
 				case EOF:
 					return new ArrayList<NodeDclStm>();
 				default:
@@ -86,6 +89,7 @@ public class Parser {
 		catch(IOException | LexicalException | SyntaxException e) {
 			throw new SyntaxException(e.getMessage());
 		}
+		return null;
 	}
 	
 	//Dcl -> tyFloat id; | tyInt id;
@@ -93,20 +97,21 @@ public class Parser {
 		try{
 			Token token = scanner.peekToken();
 			//print("parseDcl");	
-			NodeDcl nodeDcl = new NodeDcl();
 			switch(token.getType()) {
 				case FLOATDEC:
+					NodeDcl nodeDcl1 = new NodeDcl();
 					//modifica a nodeDcl da ritornare
 					match(TokenType.FLOATDEC);
 					match(TokenType.ID);
 					match(TokenType.SEMI);
-					return nodeDcl;
+					return nodeDcl1;
 				case INTDEC:
+					NodeDcl nodeDcl2 = new NodeDcl();
 					//modifica a nodeDcl da ritornare
 					match(TokenType.INTDEC);
 					match(TokenType.ID);
 					match(TokenType.SEMI);
-					return nodeDcl;
+					return nodeDcl2;
 				default:
 					panicMode(token);
 			}
