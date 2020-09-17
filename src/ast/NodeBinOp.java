@@ -1,6 +1,9 @@
 package ast;
 
-public class NodeBinOp extends NodeExpr {
+public class NodeBinOp extends NodeExpr {//stesso tipo di left e right
+	//può essere necessario introdurre una conversione se un nodo
+	//ha tipo INT e l’altro FLOAT
+	
 	private final LangOp op;//operatore
 	private final NodeExpr left;//ast a sx dell'operatore
 	private final NodeExpr right;//ast a dx dell'operatore

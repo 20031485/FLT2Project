@@ -3,7 +3,7 @@ package ast;
 //node representing constants in the AST
 public class NodeConst extends NodeExpr {
 	//fields
-	private final LangType type;//int o float
+	private final LangType type;//int o float, stesso tipo di value
 	private final String value;//valore
 	
 	//constructor
