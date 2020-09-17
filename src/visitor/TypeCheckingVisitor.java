@@ -4,6 +4,7 @@ import ast.*;
 
 public class TypeCheckingVisitor implements IVisitor{
 	StringBuilder log = new StringBuilder();
+	//SymbolTable st?
 	
 	@Override
 	public void visit(NodePrg node) {
