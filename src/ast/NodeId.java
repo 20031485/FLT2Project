@@ -1,7 +1,8 @@
 package ast;
 
 public class NodeId extends NodeAST {
-	private String id;
+	private final String id;
+	//private String lexval;
 	
 	public NodeId(String id) {
 		this.id = id;
@@ -10,6 +11,7 @@ public class NodeId extends NodeAST {
 	@Override
 	public String toString() {
 		return this.getId();
+		//return "<"+this.getId()+","+this.getLexval()+">";
 	}
 
 	@Override

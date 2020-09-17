@@ -2,14 +2,17 @@ package ast;
 
 //node representing constants in the AST
 public class NodeConst extends NodeExpr {
-	private String value;
-	private LangType type;
-
-	public NodeConst(String value, LangType type) {
-		this.value = value;
+	//fields
+	private final LangType type;//int o float
+	private final String value;//valore
+	
+	//constructor
+	public NodeConst(LangType type, String value) {
 		this.type = type;
+		this.value = value;
 	}
 	
+	//methods
 	public String getValue() {
 		return this.value;
 	}
@@ -20,7 +23,7 @@ public class NodeConst extends NodeExpr {
 	
 	@Override
 	public String toString() {
-		return this.getValue();
+		return this.type+":"+this.getValue();
 	}
 
 	@Override

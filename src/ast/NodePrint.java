@@ -1,19 +1,25 @@
 package ast;
 
 public class NodePrint extends NodeStm {
-	private NodeId id;
+	private final NodeId id;
 	
 	public NodePrint(NodeId id) {
 		this.id = id;
 	}
 	
+	public NodeId getId() {
+		return this.id;
+	}
+	
 	public String toString() {
-		return id.toString(); //sistemare
+		return "print "+ id.toString(); //sistemare
 	}
 
 	@Override
 	public boolean equals(Object o) {
-		// TODO Auto-generated method stub
+		if(this == o ||
+				this.id.equals(((NodePrint)o).getId()))
+			return true;
 		return false;
 	}
 }

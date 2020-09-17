@@ -6,21 +6,28 @@ public class NodePrg extends NodeAST {
 	private ArrayList<NodeDclStm> dclStm;
 
 	public NodePrg() {
+		this.dclStm = null;
 	}
 	
 	public NodePrg(ArrayList<NodeDclStm> dclStm) {
 		this.dclStm.addAll(dclStm);
 	}
 	
+	//methods
+	public ArrayList<NodeDclStm> getDclStm(){
+		return this.dclStm;
+	}
+	
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return dclStm.toString();
 	}
 
 	@Override
 	public boolean equals(Object o) {
-		// TODO Auto-generated method stub
+		if(this == o ||
+				this.dclStm.equals(((NodePrg)o).getDclStm()))
+			return true;
 		return false;
 	}
 }

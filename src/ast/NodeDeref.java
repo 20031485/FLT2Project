@@ -1,16 +1,26 @@
 package ast;
 
 public class NodeDeref extends NodeExpr {
-	private NodeId id;
+	private final NodeId id;
+	
+	public NodeDeref(NodeId id) {
+		this.id = id;
+	}
+	
+	public NodeId getId() {
+		return this.id;
+	}
+	
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return id.toString();
 	}
 
 	@Override
 	public boolean equals(Object o) {
-		// TODO Auto-generated method stub
+		if(this == o ||
+				this.id.equals(((NodeDeref)o).getId()))
+			return true;
 		return false;
 	}
 

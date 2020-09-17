@@ -1,21 +1,35 @@
 package ast;
 
 public class NodeDcl extends NodeDclStm {
-	private NodeId id;
-	private LangType type;
+	private final LangType type;//int o float
+	private final NodeId id;//nodo contenente il nome della variabile
 	
-	public NodeDcl() {
-		
+	//constructor
+	public NodeDcl(LangType type, NodeId id) {
+		this.type = type;
+		this.id = id;
+	}
+	
+	//methods
+	public NodeId getId() {
+		return id;
+	}
+
+	public LangType getType() {
+		return type;
 	}
 	
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.type+" "+this.id.toString();
 	}
+	
 	@Override
 	public boolean equals(Object o) {
-		// TODO Auto-generated method stub
+		if(this == o || 
+				((this.type == ((NodeDcl) o).getType()))
+						&& (this.id.equals(((NodeDcl) o).getId())))
+					return true;
 		return false;
 	}
 }

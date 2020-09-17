@@ -1,17 +1,34 @@
 package ast;
 
 public class NodeAssign extends NodeStm {
-	private NodeId id;
-	private NodeExpr expr;
+	private final NodeId id;//nodo contenente la VARIABILE
+	private final NodeExpr expr;//ast contenente l'espressione assegnata
+	
+	public NodeAssign(NodeExpr expr) {
+		this.id = new NodeId("=");
+		this.expr = expr;
+	}
+	
+	public NodeId getId() {
+		return this.id;
+	}
+	
+	public NodeExpr getExpr() {
+		return this.expr;
+	}
 	
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.id.toString()+"="+this.expr.toString();
 	}
+	
 	@Override
 	public boolean equals(Object o) {
-		// TODO Auto-generated method stub
+		if(((o instanceof NodeAssign) 
+				&& this.getId().equals(((NodeAssign)o).getId()) 
+				&& this.getExpr().equals(((NodeAssign)o).getExpr())) 
+			|| this == o)
+			return true;
 		return false;
 	}
 }

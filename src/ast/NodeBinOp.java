@@ -1,18 +1,42 @@
 package ast;
 
 public class NodeBinOp extends NodeExpr {
-	LangOp op;
-	NodeExpr leftOp;
-	NodeExpr ast;
+	private final LangOp op;//operatore
+	private final NodeExpr left;//ast a sx dell'operatore
+	private final NodeExpr right;//ast a dx dell'operatore
+	
+	//constructor
+	public NodeBinOp(LangOp op, NodeExpr left, NodeExpr right) {
+		this.op = op;
+		this.left = left;
+		this.right = right;
+	}
+	
+	//methods
+	public LangOp getOp() {
+		return op;
+	}
+
+	public NodeExpr getLeft() {
+		return left;
+	}
+
+	public NodeExpr getRight() {
+		return right;
+	}
 	
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.left.toString()+" "+ op + " "+this.right.toString();
 	}
+	
 	@Override
 	public boolean equals(Object o) {
-		// TODO Auto-generated method stub
+		if(this == o || 
+				((this.left.equals(((NodeBinOp) o).getLeft()))
+						&& (this.left.equals(((NodeBinOp) o).getLeft())) 
+						&& (this.op == ((NodeBinOp) o).getOp())))
+					return true;
 		return false;
 	}
 }
