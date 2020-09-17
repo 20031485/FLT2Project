@@ -1,6 +1,10 @@
 package ast;
 
 public enum LangType {
-	INT,
-	FLOAT
+	INT("int"),
+	FLOAT("float");
+	public final String label;
+	private LangType(String label) {
+		this.label = label;
+	}
 }

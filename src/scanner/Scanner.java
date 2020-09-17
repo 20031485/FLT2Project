@@ -179,7 +179,7 @@ public class Scanner {
 	private Token scanEOF() throws IOException, LexicalException {
 		readSkipChars();
 		if(readChar() == EOF) {
-			return new Token(TokenType.EOF, line, null);
+			return new Token(TokenType.EOF, line, "EOF");
 		}
 		throw new LexicalException("LexicalException@line:"+line+"\nExpected EOF!");
 	}
@@ -188,17 +188,17 @@ public class Scanner {
 		readSkipChars();
 		switch(readChar()) {
 			case '+':
-				return new Token(TokenType.PLUS, currentLine, null);
+				return new Token(TokenType.PLUS, currentLine, "+");
 			case '-':
-				return new Token(TokenType.MINUS, currentLine, null);
+				return new Token(TokenType.MINUS, currentLine, "-");
 			case '*':
-				return new Token(TokenType.TIMES, currentLine, null);
+				return new Token(TokenType.TIMES, currentLine, "*");
 			case '/':
-				return new Token(TokenType.DIV, currentLine, null);
+				return new Token(TokenType.DIV, currentLine, "/");
 			case '=':
-				return new Token(TokenType.ASSIGN, currentLine, null);
+				return new Token(TokenType.ASSIGN, currentLine, "=");
 			case ';':
-				return new Token(TokenType.SEMI, currentLine, null); 
+				return new Token(TokenType.SEMI, currentLine, ";"); 
 		}
 		throw new LexicalException("LexicalException@line:"+line+"\nExpected operator!");
 	}

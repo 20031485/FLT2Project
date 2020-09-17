@@ -27,7 +27,7 @@ public class NodeBinOp extends NodeExpr {
 	
 	@Override
 	public String toString() {
-		return this.left.toString()+" "+ op + " "+this.right.toString();
+		return op + " "+this.left.toString()+" "+this.right.toString();
 	}
 	
 	@Override

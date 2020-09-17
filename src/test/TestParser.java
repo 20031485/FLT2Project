@@ -16,7 +16,7 @@ public class TestParser {
 		try {
 			Parser parser = new Parser(path);
 			try {
-				parser.parse();
+				System.out.println(parser.parse().toString());
 			} catch (SyntaxException e) {
 				// TODO Auto-generated catch block
 				//e.printStackTrace();

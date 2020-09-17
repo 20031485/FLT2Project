@@ -11,9 +11,6 @@ public class Token {
 		this.line = line;
 		this.value = value;
 	}
-	
-	public Token(TokenType type, int line) {
-	}
 
     // Getters per i campi
 	public int getLine() {
@@ -24,11 +21,12 @@ public class Token {
 		return this.type;
 	}
 	
-	public String getvalue() {
-		//significativo solo per i token che hanno un valore
-		if(this.value != null) 
+	public String getValue() {
+		//significativo solo per i token che hanno un valore (int e float)
+		/*if(this.value != null) 
 			return this.value;
-		return "none";
+		return "none";*/
+		return this.value;
 	}
 
 	public boolean equals(Object o) {
@@ -45,7 +43,7 @@ public class Token {
 
 	public String toString() {
 		String string = "<" + type + ", ";
-		if(type.equals(TokenType.INTVAL) || type.equals(TokenType.FLOATVAL))
+		if(this.getValue() != null)
 			string += "val: "+value+", ";
 		string += "line: " + line + ">";
 		return string;

@@ -15,7 +15,7 @@ class TestToken {
 		assertNotNull(token);
 		assertNotNull(token.getType());
 		assertNotNull(token.getLine());
-		assertEquals(token.getvalue(), "none");
+		assertEquals(token.getValue(), "none");
 		
 		Token token2 = new Token(TokenType.ASSIGN, 1, null);
 		assertEquals(token, token2);

@@ -10,6 +10,7 @@ public class NodePrg extends NodeAST {
 	}
 	
 	public NodePrg(ArrayList<NodeDclStm> dclStm) {
+		this.dclStm = new ArrayList<NodeDclStm>();
 		this.dclStm.addAll(dclStm);
 	}
 	

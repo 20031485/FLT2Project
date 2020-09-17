@@ -4,9 +4,17 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import ast.LangOp;
+import ast.LangType;
 import ast.NodeAST;
+import ast.NodeAssign;
+import ast.NodeBinOp;
+import ast.NodeConst;
 import ast.NodeDcl;
 import ast.NodeDclStm;
+import ast.NodeDeref;
+import ast.NodeExpr;
+import ast.NodeId;
 import ast.NodePrg;
 import ast.NodePrint;
 import ast.NodeStm;
@@ -14,7 +22,7 @@ import scanner.LexicalException;
 import scanner.Scanner;
 import token.Token;
 import token.TokenType;
-//TODO classe statica Attributes per mantenere gli attributi durante il parsing
+
 public class Parser {
 	private Scanner scanner;
 	
@@ -74,11 +82,8 @@ public class Parser {
 				case PRINT:
 					NodeStm nodeStm = parseStm();
 					ArrayList<NodeDclStm> nodeDS2 = parseDSs();
-					//if(nodeStm != null)
-						//nodeDS.add(nodeStm);
-					//nodeDS.add(parseStm());//boh non so se NodeDclStm è giusto LOL
-					//nodeDS = parseDSs();
-					//nodeDS.add(nodeStm);
+					if(nodeStm != null)
+						nodeDS2.add(nodeStm);
 					return nodeDS2;
 				case EOF:
 					return new ArrayList<NodeDclStm>();
@@ -99,19 +104,21 @@ public class Parser {
 			//print("parseDcl");	
 			switch(token.getType()) {
 				case FLOATDEC:
-					NodeDcl nodeDcl1 = new NodeDcl();
+					//NodeDcl nodeDcl1 = new NodeDcl(LangType.FLOAT, new NodeId(token.getValue()));
 					//modifica a nodeDcl da ritornare
 					match(TokenType.FLOATDEC);
-					match(TokenType.ID);
+					//match(TokenType.ID);
+					NodeId nodeId1 = new NodeId(match(TokenType.ID));
 					match(TokenType.SEMI);
-					return nodeDcl1;
+					return new NodeDcl(LangType.FLOAT, nodeId1);//nodeDcl1;
 				case INTDEC:
-					NodeDcl nodeDcl2 = new NodeDcl();
+					//NodeDcl nodeDcl2 = new NodeDcl(LangType.INT, new NodeId(token.getValue()));
 					//modifica a nodeDcl da ritornare
 					match(TokenType.INTDEC);
-					match(TokenType.ID);
+					//match(TokenType.ID);
+					NodeId nodeId2 = new NodeId(match(TokenType.ID));
 					match(TokenType.SEMI);
-					return nodeDcl2;
+					return new NodeDcl(LangType.INT, nodeId2);//nodeDcl2;
 				default:
 					panicMode(token);
 			}
@@ -126,21 +133,21 @@ public class Parser {
 	private NodeStm parseStm() throws SyntaxException {
 		try {
 			Token token = scanner.peekToken();
-			NodeStm nodeStm;
 			//print("parseStm");
 			switch(token.getType()) {
 				case PRINT:
-					NodeStm nodePrint = new NodePrint(null);
 					match(TokenType.PRINT);
-					match(TokenType.ID);
+					//match(TokenType.ID);
+					NodeStm nodePrint = new NodePrint(new NodeId(match(TokenType.ID)));
 					match(TokenType.SEMI);
 					return nodePrint;
 				case ID:
-					match(TokenType.ID);
+					NodeId nodeId = new NodeId(match(TokenType.ID));
 					match(TokenType.ASSIGN);
-					parseExp();
+					//parseExp();
+					NodeAssign nodeAssign = new NodeAssign(nodeId, parseExp());
 					match(TokenType.SEMI);
-					return null; //modificare in futuro con un return nodeExp credo LOL
+					return nodeAssign; //modificare in futuro con un return nodeExp credo LOL
 				default:
 					panicMode(token);
 			}
@@ -152,16 +159,16 @@ public class Parser {
 	}
 	
 	//Exp -> Tr ExpP
-	private void parseExp() throws SyntaxException {
+	private NodeExpr parseExp() throws SyntaxException {
 		try {
 			Token token = scanner.peekToken();
 			switch(token.getType()) {
 				case INTVAL:
 				case FLOATVAL:
 				case ID:
-					parseTr();
-					parseExpP();
-					return;
+					NodeExpr nodeTr = parseTr();
+					NodeExpr nodeExpP = parseExpP(nodeTr);
+					return nodeExpP;
 				default:
 					panicMode(token);
 			}
@@ -169,19 +176,19 @@ public class Parser {
 		catch(IOException | LexicalException | SyntaxException e) {
 			throw new SyntaxException(e.getMessage());
 		}
+		return null;
 	}
 	
 	//Tr -> Val TrP
-	private void parseTr() throws SyntaxException {
+	private NodeExpr parseTr() throws SyntaxException {
 		try {
 			Token token = scanner.peekToken();
 			switch(token.getType()) {
 				case INTVAL:
 				case FLOATVAL:
 				case ID:
-					parseVal();
-					parseTrP();
-					return;
+					NodeExpr nodeVal = parseVal();
+					return parseTrP(nodeVal);
 				default:
 					panicMode(token);
 			}
@@ -189,24 +196,25 @@ public class Parser {
 		catch(IOException | LexicalException | SyntaxException e) {
 			throw new SyntaxException(e.getMessage());
 		}
+		return null;
 	}
 	
 	//ExpP -> + Exp | - Exp | eps
-	private void parseExpP() throws SyntaxException {
+	private NodeExpr parseExpP(NodeExpr leftBranch) throws SyntaxException {
 		try {
 			Token token = scanner.peekToken();
 			switch(token.getType()) {
 				case PLUS:
 					match(TokenType.PLUS);
-					parseExp();
-					return;
+					//NodeExpr rightBranch1 = parseExp();
+					return new NodeBinOp(LangOp.PLUS, leftBranch, parseExp());//rightBranch1);
 				case MINUS:
 					match(TokenType.MINUS);
-					parseExp();
-					return;
+					//NodeExpr rightBranch2 = parseExp();
+					return new NodeBinOp(LangOp.MINUS, leftBranch, parseExp());//rightBranch2);
 				case SEMI:
 					//parse eps
-					return;
+					return leftBranch;
 				default:
 					panicMode(token);
 			}
@@ -214,22 +222,20 @@ public class Parser {
 		catch(IOException | LexicalException | SyntaxException e) {
 			throw new SyntaxException(e.getMessage());
 		}
+		return null;
 	}
 	
 	//Val -> int | float | id
-	private void parseVal() throws SyntaxException {
+	private NodeExpr parseVal() throws SyntaxException {
 		try {
 			Token token = scanner.peekToken();
 			switch(token.getType()) {
 				case INTVAL:
-					match(TokenType.INTVAL);
-					return;
+					return new NodeConst(LangType.INT, match(TokenType.INTVAL));
 				case FLOATVAL:
-					match(TokenType.FLOATVAL);
-					return;
+					return new NodeConst(LangType.FLOAT, match(TokenType.FLOATVAL));
 				case ID:
-					match(TokenType.ID);
-					return;
+					return new NodeDeref(new NodeId(match(TokenType.ID)));
 				default:
 					panicMode(token);
 			}
@@ -237,26 +243,27 @@ public class Parser {
 		catch(IOException | LexicalException | SyntaxException e) {
 			throw new SyntaxException(e.getMessage());
 		}
+		return null;
 	}
 	
 	//TrP -> * Tr | / Tr | eps
-	private void parseTrP() throws SyntaxException {
+	private NodeExpr parseTrP(NodeExpr leftBranch) throws SyntaxException {
 		try {
 			Token token = scanner.peekToken();
 			switch(token.getType()) {
 				case TIMES:
 					match(TokenType.TIMES);
-					parseTr();
-					return;
+					//parseTr();
+					return new NodeBinOp(LangOp.TIMES, leftBranch, parseTr());
 				case DIV:
 					match(TokenType.DIV);
-					parseTr();
-					return;
+					//parseTr();
+					return new NodeBinOp(LangOp.DIVIDE, leftBranch, parseTr());
 				case PLUS:
 				case MINUS:
 				case SEMI:
 					//parse eps
-					return;
+					return leftBranch;
 				default:
 					panicMode(token);
 			}
@@ -264,16 +271,19 @@ public class Parser {
 		catch(IOException | LexicalException | SyntaxException e) {
 			throw new SyntaxException(e.getMessage());
 		}
+		return null;
 	}
 	
-	void match(TokenType tokenType) throws SyntaxException, IOException, LexicalException {
+	private String match(TokenType tokenType) throws SyntaxException, IOException, LexicalException {
 		Token token = scanner.peekToken();
 		if(tokenType == token.getType()) {
 			Token nextToken = scanner.nextToken();
-			print(nextToken.toString());
+			//print(nextToken.toString());
+			return nextToken.getValue();//ritorna una stringa solo se il token è un INTVAL o FLOATVAL
 		}
 		//else
 			//panicMode(token);
+		return null;
 	}
 	
 	public void print(String s) {
@@ -291,6 +301,5 @@ public class Parser {
 			print("panicMode:CATCH");
 			throw new SyntaxException(e.getMessage());
 		}
-		
 	}
 }

@@ -4,8 +4,8 @@ public class NodeAssign extends NodeStm {
 	private final NodeId id;//nodo contenente la VARIABILE
 	private final NodeExpr expr;//ast contenente l'espressione assegnata
 	
-	public NodeAssign(NodeExpr expr) {
-		this.id = new NodeId("=");
+	public NodeAssign(NodeId id, NodeExpr expr) {
+		this.id = id;
 		this.expr = expr;
 	}
 	
@@ -19,7 +19,7 @@ public class NodeAssign extends NodeStm {
 	
 	@Override
 	public String toString() {
-		return this.id.toString()+"="+this.expr.toString();
+		return "ASSIGN " +this.id.toString()+" "+this.expr.toString();
 	}
 	
 	@Override

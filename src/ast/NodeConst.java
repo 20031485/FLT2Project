@@ -23,7 +23,7 @@ public class NodeConst extends NodeExpr {
 	
 	@Override
 	public String toString() {
-		return this.type+":"+this.getValue();
+		return /*this.type+":"+*/this.getValue();
 	}
 
 	@Override
