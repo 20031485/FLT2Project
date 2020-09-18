@@ -1,10 +1,11 @@
 package ast;
 
 import symbolTable.Attributes;
+import visitor.IVisitor;
 
 public class NodeId extends NodeAST {
 	private final String id;
-	private final Attributes definition;
+	private Attributes definition;
 	//private String lexval;
 	
 	public NodeId(String id) {
@@ -12,6 +13,14 @@ public class NodeId extends NodeAST {
 		this.id = id;
 	}
 	
+	public Attributes getDefinition() {
+		return definition;
+	}
+
+	public void setDefinition(Attributes definition) {
+		this.definition = definition;
+	}
+
 	@Override
 	public String toString() {
 		return this.getId();
@@ -30,8 +39,7 @@ public class NodeId extends NodeAST {
 	}
 
 	@Override
-	public void accept() {
-		// TODO Auto-generated method stub
-		
+	public void accept(IVisitor visitor) {
+		visitor.visit(this);
 	}
 }

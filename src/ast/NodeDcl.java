@@ -1,5 +1,7 @@
 package ast;
 
+import visitor.IVisitor;
+
 public class NodeDcl extends NodeDclStm {
 	private final LangType type;//int o float
 	private final NodeId id;//nodo contenente il nome della variabile
@@ -34,8 +36,7 @@ public class NodeDcl extends NodeDclStm {
 	}
 
 	@Override
-	public void accept() {
-		// TODO Auto-generated method stub
-		
+	public void accept(IVisitor visitor) {
+		visitor.visit(this);
 	}
 }

@@ -1,8 +1,10 @@
 package ast;
 
+import visitor.IVisitor;
+
 public class NodeAssign extends NodeStm {
 	private final NodeId id;//nodo contenente la VARIABILE
-	private final NodeExpr expr;//ast contenente l'espressione assegnata
+	private NodeExpr expr;//ast contenente l'espressione assegnata
 	
 	public NodeAssign(NodeId id, NodeExpr expr) {
 		this.id = id;
@@ -15,6 +17,10 @@ public class NodeAssign extends NodeStm {
 	
 	public NodeExpr getExpr() {
 		return this.expr;
+	}
+	
+	public void setExpr(NodeExpr nodeExpr) {
+		this.expr = nodeExpr;
 	}
 	
 	@Override
@@ -33,8 +39,7 @@ public class NodeAssign extends NodeStm {
 	}
 
 	@Override
-	public void accept() {
-		// TODO Auto-generated method stub
-		
+	public void accept(IVisitor visitor) {
+		visitor.visit(this);
 	}
 }

@@ -1,5 +1,7 @@
 package ast;
 
+import visitor.IVisitor;
+
 public class NodePrint extends NodeStm {
 	private final NodeId id;
 	
@@ -24,8 +26,7 @@ public class NodePrint extends NodeStm {
 	}
 
 	@Override
-	public void accept() {
-		// TODO Auto-generated method stub
-		
+	public void accept(IVisitor visitor) {
+		visitor.visit(this);
 	}
 }

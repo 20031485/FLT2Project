@@ -1,5 +1,7 @@
 package ast;
 
+import visitor.IVisitor;
+
 //node representing constants in the AST
 public class NodeConst extends NodeExpr {
 	//fields
@@ -35,8 +37,7 @@ public class NodeConst extends NodeExpr {
 	}
 
 	@Override
-	public void accept() {
-		// TODO Auto-generated method stub
-		
+	public void accept(IVisitor visitor) {
+		visitor.visit(this);
 	}
 }

@@ -1,12 +1,14 @@
 package ast;
 
+import visitor.IVisitor;
+
 public class NodeBinOp extends NodeExpr {//stesso tipo di left e right
 	//può essere necessario introdurre una conversione se un nodo
 	//ha tipo INT e l’altro FLOAT
 	
 	private final LangOp op;//operatore
-	private final NodeExpr left;//ast a sx dell'operatore
-	private final NodeExpr right;//ast a dx dell'operatore
+	private NodeExpr left;//ast a sx dell'operatore
+	private NodeExpr right;//ast a dx dell'operatore
 	
 	//constructor
 	public NodeBinOp(LangOp op, NodeExpr left, NodeExpr right) {
@@ -28,6 +30,14 @@ public class NodeBinOp extends NodeExpr {//stesso tipo di left e right
 		return right;
 	}
 	
+	public void setLeft(NodeExpr left) {
+		this.left = left;
+	}
+
+	public void setRight(NodeExpr right) {
+		this.right = right;
+	}
+
 	@Override
 	public String toString() {
 		return op + " "+this.left.toString()+" "+this.right.toString();
@@ -44,8 +54,7 @@ public class NodeBinOp extends NodeExpr {//stesso tipo di left e right
 	}
 
 	@Override
-	public void accept() {
-		// TODO Auto-generated method stub
-		
+	public void accept(IVisitor visitor) {
+		visitor.visit(this);
 	}
 }

@@ -1,7 +1,16 @@
 package symbolTable;
 
-import ast.LangType;
+
+import ast.TypeDescriptor;
 
 public class Attributes {
-	LangType type;
+	TypeDescriptor type;
+
+	public TypeDescriptor getType() {
+		return type;
+	}
+
+	public void setType(TypeDescriptor type) {
+		this.type = type;
+	}
 }

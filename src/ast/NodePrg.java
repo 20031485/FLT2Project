@@ -2,6 +2,8 @@ package ast;
 
 import java.util.ArrayList;
 
+import visitor.IVisitor;
+
 public class NodePrg extends NodeAST {
 	private ArrayList<NodeDclStm> dclStm;
 
@@ -39,8 +41,7 @@ public class NodePrg extends NodeAST {
 	}
 
 	@Override
-	public void accept() {
-		// TODO Auto-generated method stub
-		
+	public void accept(IVisitor visitor) {
+		visitor.visit(this);
 	}
 }
