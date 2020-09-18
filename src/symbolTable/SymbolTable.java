@@ -1,6 +1,7 @@
 package symbolTable;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class SymbolTable {
 	private static HashMap<String, Attributes> table;
@@ -34,5 +35,9 @@ public class SymbolTable {
 
 	public static int size() {
 		return (table.size());
+	}
+	
+	public static Iterator<Attributes> getTableIterator(){
+		return table.values().iterator();
 	}
 }
