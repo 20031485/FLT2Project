@@ -9,9 +9,8 @@ public class NodeConv extends NodeExpr {
 	//dell'espressione
 	private NodeExpr expr;
 	
-	public NodeConv(NodeExpr nodeExpr, TypeDescriptor typeDescriptor) {
+	public NodeConv(NodeExpr nodeExpr) {
 		this.expr = nodeExpr;
-		this.setTypeDescriptor(typeDescriptor);
 	}
 	
 	public NodeExpr getExpr() {

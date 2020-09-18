@@ -22,11 +22,12 @@ public class SymbolTable {
 	}
 
 	public static String toStr() { // Per output
-		StringBuilder res = new StringBuilder("symbol table\n=============\n");
+		StringBuilder res = new StringBuilder("symbol table\n=============\n").append("[var]\t\t[type]\n");
 
 		for (HashMap.Entry<String, Attributes> entry : table.entrySet())
-			res.append(entry.getKey()).append("   \t").append(entry.getValue())
+			res.append(entry.getKey()).append("\t\t").append(entry.getValue().getType())
 					.append("\n");
+		res.append("\n=============\n");
 
 		return res.toString();
 	}

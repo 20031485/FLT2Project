@@ -9,7 +9,18 @@ public class NodeId extends NodeAST {
 	//private String lexval;
 	
 	public NodeId(String id) {
-		this.definition = new Attributes();//TODO
+		super();
+		this.id = id;
+		this.definition = null;
+	}
+	
+	public NodeId(String id, TypeDescriptor typeDescriptor) {
+		this.definition = null;
+		this.id = id;
+	}
+	
+	public NodeId(String id, Attributes attrs) {
+		this.definition = attrs;
 		this.id = id;
 	}
 	

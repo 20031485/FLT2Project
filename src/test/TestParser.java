@@ -1,13 +1,11 @@
 package test;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import parser.Parser;
 import parser.SyntaxException;
-import scanner.LexicalException;
 
 public class TestParser {
 	@Test
@@ -19,12 +17,12 @@ public class TestParser {
 				System.out.println(parser.parse().toString());
 			} catch (SyntaxException e) {
 				// TODO Auto-generated catch block
-				//e.printStackTrace();
+				e.printStackTrace();
 			}
 			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 }

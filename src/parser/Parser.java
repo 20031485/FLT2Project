@@ -17,6 +17,7 @@ import ast.NodeId;
 import ast.NodePrg;
 import ast.NodePrint;
 import ast.NodeStm;
+import ast.TypeDescriptor;
 import scanner.LexicalException;
 import scanner.Scanner;
 import token.Token;
@@ -48,13 +49,13 @@ public class Parser {
 				case INTDEC:
 				case ID:
 				case PRINT:
-					NodePrg nodePrg1 = new NodePrg(parseDSs());
-					match(TokenType.EOF);
-					return nodePrg1;
+//					NodePrg nodePrg1 = new NodePrg(parseDSs());
+//					match(TokenType.EOF);
+//					return nodePrg1;
 				case EOF:
-					NodePrg nodePrg2 = new NodePrg();
+					NodePrg nodePrg = new NodePrg(parseDSs());
 					match(TokenType.EOF);
-					return nodePrg2;
+					return nodePrg;
 				default:
 					panicMode(token);
 			}
@@ -75,14 +76,14 @@ public class Parser {
 				case INTDEC:
 					NodeDcl nodeDcl = parseDcl();
 					ArrayList<NodeDclStm> nodeDS1 = parseDSs();
-					nodeDS1.add(nodeDcl);
+					nodeDS1.add(0, nodeDcl);
 					return nodeDS1;
 				case ID:
 				case PRINT:
 					NodeStm nodeStm = parseStm();
 					ArrayList<NodeDclStm> nodeDS2 = parseDSs();
 					if(nodeStm != null)
-						nodeDS2.add(nodeStm);
+						nodeDS2.add(0, nodeStm);
 					return nodeDS2;
 				case EOF:
 					return new ArrayList<NodeDclStm>();
@@ -103,18 +104,12 @@ public class Parser {
 			//print("parseDcl");	
 			switch(token.getType()) {
 				case FLOATDEC:
-					//NodeDcl nodeDcl1 = new NodeDcl(LangType.FLOAT, new NodeId(token.getValue()));
-					//modifica a nodeDcl da ritornare
 					match(TokenType.FLOATDEC);
-					//match(TokenType.ID);
 					NodeId nodeId1 = new NodeId(match(TokenType.ID));
 					match(TokenType.SEMI);
-					return new NodeDcl(LangType.FLOAT, nodeId1);//nodeDcl1;
+					return new NodeDcl(LangType.FLOAT, nodeId1);
 				case INTDEC:
-					//NodeDcl nodeDcl2 = new NodeDcl(LangType.INT, new NodeId(token.getValue()));
-					//modifica a nodeDcl da ritornare
 					match(TokenType.INTDEC);
-					//match(TokenType.ID);
 					NodeId nodeId2 = new NodeId(match(TokenType.ID));
 					match(TokenType.SEMI);
 					return new NodeDcl(LangType.INT, nodeId2);//nodeDcl2;
@@ -136,17 +131,15 @@ public class Parser {
 			switch(token.getType()) {
 				case PRINT:
 					match(TokenType.PRINT);
-					//match(TokenType.ID);
 					NodeStm nodePrint = new NodePrint(new NodeId(match(TokenType.ID)));
 					match(TokenType.SEMI);
 					return nodePrint;
 				case ID:
 					NodeId nodeId = new NodeId(match(TokenType.ID));
 					match(TokenType.ASSIGN);
-					//parseExp();
 					NodeAssign nodeAssign = new NodeAssign(nodeId, parseExp());
 					match(TokenType.SEMI);
-					return nodeAssign; //modificare in futuro con un return nodeExp credo LOL
+					return nodeAssign;
 				default:
 					panicMode(token);
 			}
@@ -205,12 +198,10 @@ public class Parser {
 			switch(token.getType()) {
 				case PLUS:
 					match(TokenType.PLUS);
-					//NodeExpr rightBranch1 = parseExp();
-					return new NodeBinOp(LangOp.PLUS, leftBranch, parseExp());//rightBranch1);
+					return new NodeBinOp(LangOp.PLUS, leftBranch, parseExp());
 				case MINUS:
 					match(TokenType.MINUS);
-					//NodeExpr rightBranch2 = parseExp();
-					return new NodeBinOp(LangOp.MINUS, leftBranch, parseExp());//rightBranch2);
+					return new NodeBinOp(LangOp.MINUS, leftBranch, parseExp());
 				case SEMI:
 					//parse eps
 					return leftBranch;
@@ -252,11 +243,9 @@ public class Parser {
 			switch(token.getType()) {
 				case TIMES:
 					match(TokenType.TIMES);
-					//parseTr();
 					return new NodeBinOp(LangOp.TIMES, leftBranch, parseTr());
 				case DIV:
 					match(TokenType.DIV);
-					//parseTr();
 					return new NodeBinOp(LangOp.DIVIDE, leftBranch, parseTr());
 				case PLUS:
 				case MINUS:
@@ -277,7 +266,7 @@ public class Parser {
 		Token token = scanner.peekToken();
 		if(tokenType == token.getType()) {
 			Token nextToken = scanner.nextToken();
-			//print(nextToken.toString());
+			print(nextToken.toString());
 			return nextToken.getValue();//ritorna una stringa solo se il token è un INTVAL o FLOATVAL
 		}
 		//else
