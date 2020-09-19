@@ -5,7 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PushbackReader;
 import java.util.Arrays;
-import java.util.HashMap;
+//import java.util.HashMap;
 import java.util.List;
 
 import token.*;
@@ -17,8 +17,8 @@ public class Scanner {
 	//da utilizzare localmente alla peekToken
 	private int currentLine;
 	private PushbackReader buffer;
-	private String log;
-	private Token token;
+	//private String log;
+	//private Token token;
 	private static final int MIN_DIGITS = 1;
 	private static final int MAX_DIGITS = 5;
 
@@ -26,19 +26,26 @@ public class Scanner {
 	private List<Character> letters = Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z');
 	private List<Character> numbers = Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
 	private List<Character> operators = Arrays.asList('+', '-', '*', '/', '=', ';');
-	//TODO aggiungere alle hashmaps
 	// HashMap caratteri TokenType per associazione fra '+', '-', '*', '/', '=', ';'
 	// e TokenType, mi serve in nextToken();
-	private HashMap<Character, TokenType> hashChar;
-	
-	// HashMap stringhe TokenType per associazione fra parole chiave "print",
-	// "float", "int" e TokenType
-	private HashMap<String, TokenType> hashTokens;
+//	private HashMap<Character, TokenType> hashChar;
+//	
+//	// HashMap stringhe TokenType per associazione fra parole chiave "print",
+//	// "float", "int" e TokenType
+//	private HashMap<String, TokenType> hashTokens;
 
 	public Scanner(String fileName) throws FileNotFoundException {
-		this.fileName = fileName;
+		this.setFileName(fileName);
 		this.buffer = new PushbackReader(new FileReader(fileName), 100);//aggiunta dimensione del buffer
 		line = 1;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 
 	public Token peekToken() throws IOException, LexicalException{
@@ -183,6 +190,7 @@ public class Scanner {
 		}
 		throw new LexicalException("LexicalException@line:"+line+"\nExpected EOF!");
 	}
+	
 	private Token scanOp() throws IOException, LexicalException {
 		//consumo gli eventuali skipChars ed incremento line
 		readSkipChars();
@@ -269,9 +277,8 @@ public class Scanner {
 	}
 	
 	public void readSkipChars() throws IOException {
-		Character c = null;
 		while(skipChars.contains(peekChar()) && peekChar() != EOF) {
-			c = readChar();
+			readChar();
 		}
 	}
 	

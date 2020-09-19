@@ -36,9 +36,13 @@ public class Token {
 			return false;
 		
 		Token that = (Token) o;
-		return (this.line == that.line 
-				&& this.value.equals(that.value) 
-				&& this.type.equals(that.type));
+		if(this.value == null || that.value == null)
+			return (this.line == that.line 
+					&& this.type.equals(that.type));
+		else		
+			return (this.line == that.line 
+					&& this.value.equals(that.value) 
+					&& this.type.equals(that.type));
 	}
 
 	public String toString() {

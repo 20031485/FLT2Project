@@ -3,3 +3,5 @@
 /symbolTable/
 /ast/
 /parser/
+/scanner/
+/token/
