@@ -26,18 +26,19 @@ public class CodeGenerationVisitor implements IVisitor{
 	}
 	
 	private static char newRegister() throws IndexOutOfBoundsException {
-		char out;
-		if(registerIndex < 27) {
-			out = registers[registerIndex];
-			registerIndex++;
-			return out;
-		}
-		else 
+		char newRegister;
+//		System.out.println("register index: "+ registerIndex + "(before assignment)");
+		if(registerIndex == 25) 
 			throw new IndexOutOfBoundsException("ERROR: register index exceeds register number!\n");
+		
+		newRegister = registers[registerIndex];
+//		System.out.println("\tregister chosen: reg["+registerIndex+"]="+ registers[registerIndex]);
+		registerIndex++;
+		return newRegister;
+
 	}
 	
 	private void init() throws IndexOutOfBoundsException {
-		//SymbolTable.init();
 		Iterator<Attributes> iterator = SymbolTable.getTableIterator();
 		while(iterator.hasNext())
 			iterator.next().setRegister(newRegister());
@@ -114,7 +115,7 @@ public class CodeGenerationVisitor implements IVisitor{
 	@Override
 	public void visit(NodeConv node) {
 		node.getExpr().accept(this);
-		code.append("5k ");
+		code.append("5 k ");
 	}
 	
 	public String getCode() {

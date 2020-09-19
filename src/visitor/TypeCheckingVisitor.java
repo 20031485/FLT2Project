@@ -30,7 +30,7 @@ public class TypeCheckingVisitor implements IVisitor{
 	 * Se tutto va bene assegna VOID a resType.*/
 	@Override
 	public void visit(NodeAssign node) {
-		print("visit(nodeAssign)");
+//		print("visit(nodeAssign)");
 		//visita nodeId
 		node.getId().accept(this);
 		//visita nodeExpr
@@ -53,7 +53,7 @@ public class TypeCheckingVisitor implements IVisitor{
 	(c) introduce la conversione di tipo (come per l’assegnamento).*/
 	@Override
 	public void visit(NodeBinOp node) {
-		print("visit(nodeBinOp)");
+//		print("visit(nodeBinOp)");
 		node.getLeft().accept(this);
 		node.getRight().accept(this);
 		//se uno delle sottoespressioni ha resType uguale a Error assegna Error a resType del nodo corrente
@@ -83,12 +83,12 @@ public class TypeCheckingVisitor implements IVisitor{
 	
 	@Override
 	public void visit(NodeConv node) {
-		print("visit(nodeConv)");
+//		print("visit(nodeConv)");
 	}
 	
 	@Override
 	public void visit(NodeConst node) {
-		print("visit(nodeConst)");
+//		print("visit(nodeConst)");
 		if(node.getType() == LangType.INT) {
 			node.setTypeDescriptor(TypeDescriptor.INT);
 		}
@@ -108,7 +108,7 @@ public class TypeCheckingVisitor implements IVisitor{
 	con il suo tipo e inserisci nome associato a attr nella Symbol Table.*/
 	@Override
 	public void visit(NodeDcl node) {
-		print("visit(nodeDcl)");
+//		print("visit(nodeDcl)");
 		if(!SymbolTable.enter(node.getId().getId(), new Attributes(node.getType()))) {
 			node.setTypeDescriptor(TypeDescriptor.ERROR);
 			log.append("\n\nERROR: "+node.toString()+"\nInvalid declaration: "+node.getId().getId()+" already defined in ST!");
@@ -123,7 +123,7 @@ public class TypeCheckingVisitor implements IVisitor{
 	assegna attr.tipo a node.resType e attr a node.definition.*/
 	@Override
 	public void visit(NodeId node) {
-		print("visit(nodeId)");
+//		print("visit(nodeId)");
 		//se il nome non è definito nella ST
 		Attributes attrs;
 		if((attrs = SymbolTable.lookup(node.getId())) == null) {
@@ -145,7 +145,7 @@ public class TypeCheckingVisitor implements IVisitor{
 	
 	@Override
 	public void visit(NodeDeref node) {
-		print("visit(nodeDeref)");		
+//		print("visit(nodeDeref)");		
 		node.getId().accept(this);
 		node.setTypeDescriptor(node.getId().getTypeDescriptor());
 		if(node.getId().getTypeDescriptor() == TypeDescriptor.ERROR)
@@ -157,11 +157,11 @@ public class TypeCheckingVisitor implements IVisitor{
 	Altrimenti assegna Void a resType di node.*/
 	@Override
 	public void visit(NodePrint node) {
-		print("visit(nodePrint)");
+//		print("visit(nodePrint)");
 		node.getId().accept(this);
 		if(node.getId().getTypeDescriptor() == TypeDescriptor.ERROR) {
 			node.setTypeDescriptor(TypeDescriptor.ERROR);
-			log.append("\n\nERROR: "+node.toString()+"\nInvalid type for nodePrint!");
+			log.append("\n\nERROR: "+node.toString()+"\nTrying to print an undeclared variable!");
 		}
 		else {
 			node.setTypeDescriptor(TypeDescriptor.VOID);

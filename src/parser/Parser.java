@@ -17,7 +17,6 @@ import ast.NodeId;
 import ast.NodePrg;
 import ast.NodePrint;
 import ast.NodeStm;
-import ast.TypeDescriptor;
 import scanner.LexicalException;
 import scanner.Scanner;
 import token.Token;
@@ -57,7 +56,7 @@ public class Parser {
 					match(TokenType.EOF);
 					return nodePrg;
 				default:
-					panicMode(token);
+					panic(token);
 			}
 		}
 		catch(IOException | LexicalException | SyntaxException e) {
@@ -88,7 +87,7 @@ public class Parser {
 				case EOF:
 					return new ArrayList<NodeDclStm>();
 				default:
-					panicMode(token);
+					panic(token);
 			}
 		}
 		catch(IOException | LexicalException | SyntaxException e) {
@@ -114,7 +113,7 @@ public class Parser {
 					match(TokenType.SEMI);
 					return new NodeDcl(LangType.INT, nodeId2);//nodeDcl2;
 				default:
-					panicMode(token);
+					panic(token);
 			}
 		}
 		catch(IOException | LexicalException | SyntaxException e) {
@@ -141,7 +140,7 @@ public class Parser {
 					match(TokenType.SEMI);
 					return nodeAssign;
 				default:
-					panicMode(token);
+					panic(token);
 			}
 		}
 		catch(IOException | LexicalException | SyntaxException e) {
@@ -162,7 +161,7 @@ public class Parser {
 					NodeExpr nodeExpP = parseExpP(nodeTr);
 					return nodeExpP;
 				default:
-					panicMode(token);
+					panic(token);
 			}
 		}
 		catch(IOException | LexicalException | SyntaxException e) {
@@ -182,7 +181,7 @@ public class Parser {
 					NodeExpr nodeVal = parseVal();
 					return parseTrP(nodeVal);
 				default:
-					panicMode(token);
+					panic(token);
 			}
 		}
 		catch(IOException | LexicalException | SyntaxException e) {
@@ -206,7 +205,7 @@ public class Parser {
 					//parse eps
 					return leftBranch;
 				default:
-					panicMode(token);
+					panic(token);
 			}
 		}
 		catch(IOException | LexicalException | SyntaxException e) {
@@ -227,7 +226,7 @@ public class Parser {
 				case ID:
 					return new NodeDeref(new NodeId(match(TokenType.ID)));
 				default:
-					panicMode(token);
+					panic(token);
 			}
 		}
 		catch(IOException | LexicalException | SyntaxException e) {
@@ -253,7 +252,7 @@ public class Parser {
 					//parse eps
 					return leftBranch;
 				default:
-					panicMode(token);
+					panic(token);
 			}
 		}
 		catch(IOException | LexicalException | SyntaxException e) {
@@ -266,11 +265,11 @@ public class Parser {
 		Token token = scanner.peekToken();
 		if(tokenType == token.getType()) {
 			Token nextToken = scanner.nextToken();
-			print(nextToken.toString());
+			//print(nextToken.toString());
 			return nextToken.getValue();//ritorna una stringa solo se il token è un INTVAL o FLOATVAL
 		}
 		//else
-			//panicMode(token);
+			//panic(token);
 		return null;
 	}
 	
@@ -278,16 +277,19 @@ public class Parser {
 		System.out.println(s);
 	}
 	
-	private void panicMode(Token token) throws SyntaxException {
-		Token wrongToken = token;
-		try{
-			token = scanner.nextToken();
-			print("panicMode:TRY\n\tSyntaxException@line:"+wrongToken.getLine()+"\nUnexpected token: "+wrongToken.toString());
-			parsePrg();
-		}
-		catch(IOException | LexicalException | SyntaxException e) {
-			print("panicMode:CATCH");
-			throw new SyntaxException(e.getMessage());
-		}
+	private void panic(Token token) throws SyntaxException {
+//		Token wrongToken = token;
+//		try{
+//			token = scanner.nextToken();
+////			print("panic:TRY\n\tSyntaxException@line:"+wrongToken.getLine()+"\nUnexpected token: "+wrongToken.toString());
+//			throw new SyntaxException("SyntaxException@line:"+wrongToken.getLine()+"\nUnexpected token: "+wrongToken.toString());
+//			
+//		}
+//		catch(IOException | LexicalException | SyntaxException e) {
+////			print("panic:CATCH");
+//			throw new SyntaxException(e.getMessage());
+//			//parsePrg();
+//		}
+		throw new SyntaxException("SyntaxException@line:"+token.getLine()+"\nUnexpected token: "+token.toString());
 	}
 }
