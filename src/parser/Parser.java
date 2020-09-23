@@ -278,18 +278,6 @@ public class Parser {
 	}
 	
 	private void panic(Token token) throws SyntaxException {
-//		Token wrongToken = token;
-//		try{
-//			token = scanner.nextToken();
-////			print("panic:TRY\n\tSyntaxException@line:"+wrongToken.getLine()+"\nUnexpected token: "+wrongToken.toString());
-//			throw new SyntaxException("SyntaxException@line:"+wrongToken.getLine()+"\nUnexpected token: "+wrongToken.toString());
-//			
-//		}
-//		catch(IOException | LexicalException | SyntaxException e) {
-////			print("panic:CATCH");
-//			throw new SyntaxException(e.getMessage());
-//			//parsePrg();
-//		}
 		throw new SyntaxException("SyntaxException@line:"+token.getLine()+"\nUnexpected token: "+token.toString());
 	}
 }

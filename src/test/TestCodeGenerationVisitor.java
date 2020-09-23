@@ -22,7 +22,7 @@ public class TestCodeGenerationVisitor {
 				visitor.visit(tree);
 //				System.out.println(visitor.getCode());
 //				System.out.println(SymbolTable.toStr());
-				assertEquals(visitor.getCode(), "5 5 k sa 0 k la 5 k 3.2 + sb 0 k lb p P ");
+				assertEquals(visitor.getCode(), "1.0 6 5 k / sb 0 k lb p P 1 6 / 5 k sa 0 k la p P ");
 			}
 			catch(IndexOutOfBoundsException e) {
 				fail("IndexOutOfBoundsException\n");
